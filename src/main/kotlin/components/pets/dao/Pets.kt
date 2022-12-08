@@ -12,5 +12,6 @@ object Pets:Table() {
     val colour: Column<String> = varchar("colour", 120)
     val age: Column<Int> = integer("age")
     val weight: Column<Double> = double("weight")
+    val owner: Column<String> = varchar("owner", 160)
     override val primaryKey = PrimaryKey(id, name = "PK_Pets_ID")
 }

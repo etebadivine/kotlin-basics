@@ -18,6 +18,13 @@
         <exposed.version>0.35.3</exposed.version>
         <hikaricp.version>4.0.2</hikaricp.version>
         <mysqlConnector.version>8.0.20</mysqlConnector.version>
+
+        <h2database.version>1.4.200</h2database.version>
+        <junit-jupiter.version>5.8.1</junit-jupiter.version>
+        <assertj-core.version>3.21.0</assertj-core.version>
+        <podam.version>7.2.7.RELEASE</podam.version>
+        <mockk.version>1.12.0</mockk.version>
+
     </properties>
 
     <repositories>
@@ -106,7 +113,61 @@
             <artifactId>exposed-java-time</artifactId>
             <version>${exposed.version}</version>
         </dependency>
-        <!--Libraries for database connection-->
+        <!--Libraries for database connection (end)-->
+
+        <!--Libraries for test (start)-->
+        <!-- https://mvnrepository.com/artifact/com.h2database/h2 -->
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <version>${h2database.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <!--Dependencies for junit provides the public API for writing tests and extensions.-->
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
+            <version>${junit-jupiter.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <!--Runtime scope.If we add this dependency to our classpath,
+        the Maven Surefire and Failsafe plugins (version 2.22.0 or newer) can run tests which use JUnit 5-->
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-engine</artifactId>
+            <version>${junit-jupiter.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <!--for parameterised test-->
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-params</artifactId>
+            <version>${junit-jupiter.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <!--Dependencies for assertJ-->
+        <dependency>
+            <groupId>org.assertj</groupId>
+            <artifactId>assertj-core</artifactId>
+            <version>${assertj-core.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <!-- Populate object for classes  https://mvnrepository.com/artifact/uk.co.jemos.podam/podam -->
+        <dependency>
+            <groupId>uk.co.jemos.podam</groupId>
+            <artifactId>podam</artifactId>
+            <version>${podam.version}</version>
+            <scope>test</scope><!--This is commented so it can be made available on production package-->
+        </dependency>
+        <!--For mocking objects-->
+        <dependency>
+            <groupId>io.mockk</groupId>
+            <artifactId>mockk</artifactId>
+            <version>${mockk.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+
     </dependencies>
 
 </project>

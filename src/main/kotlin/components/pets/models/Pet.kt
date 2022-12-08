@@ -8,6 +8,6 @@ data class Pet(
     var age:Int,
     var weight:Double,
     val species:String,
-    val color:String,
+    val colour:String,
     val owner:String,
 )

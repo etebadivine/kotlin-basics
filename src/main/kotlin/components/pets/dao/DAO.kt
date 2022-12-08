@@ -22,7 +22,7 @@ interface DAO {
     /**
      * get one  pet record
      * */
-    fun get(id: Int):Pet
+    fun get(id: Int):Pet?
 
     /**
      * get a list of  pets
