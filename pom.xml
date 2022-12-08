@@ -15,6 +15,9 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <kotlin.code.style>official</kotlin.code.style>
         <kotlin.compiler.jvmTarget>1.8</kotlin.compiler.jvmTarget>
+        <exposed.version>0.35.3</exposed.version>
+        <hikaricp.version>4.0.2</hikaricp.version>
+        <mysqlConnector.version>8.0.20</mysqlConnector.version>
     </properties>
 
     <repositories>
@@ -68,6 +71,42 @@
             <artifactId>kotlin-stdlib-jdk8</artifactId>
             <version>1.7.0</version>
         </dependency>
+        <!--Libraries for database connection (Start)-->
+        <dependency>
+            <groupId>com.zaxxer</groupId>
+            <artifactId>HikariCP</artifactId>
+            <version>${hikaricp.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <scope>runtime</scope>
+            <version>${mysqlConnector.version}</version>
+        </dependency>
+        <!--Libraries used for exposed-->
+        <dependency>
+            <groupId>org.jetbrains.exposed</groupId>
+            <artifactId>exposed-core</artifactId>
+            <version>${exposed.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.jetbrains.exposed</groupId>
+            <artifactId>exposed-dao</artifactId>
+            <version>${exposed.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.jetbrains.exposed</groupId>
+            <artifactId>exposed-jdbc</artifactId>
+            <version>${exposed.version}</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.jetbrains.exposed/exposed-java-time -->
+        <dependency>
+            <groupId>org.jetbrains.exposed</groupId>
+            <artifactId>exposed-java-time</artifactId>
+            <version>${exposed.version}</version>
+        </dependency>
+        <!--Libraries for database connection-->
     </dependencies>
 
 </project>
