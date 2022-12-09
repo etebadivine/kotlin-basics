@@ -12,7 +12,7 @@ import components.pets.models.Pet
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.transaction
 
-class JDBCImpl:DAO {
+class JDBCImpl:PetDAO {
 
     /**
      * creates a new record in the PETS table

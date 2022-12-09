@@ -24,6 +24,7 @@ internal class JDBCImplTest {
     private val log: Logger
     private lateinit var underTest:JDBCImpl
     private val factory: PodamFactoryImpl
+    private lateinit var pets:List<Pet>
     //init will be called once thus instantiating everything that need to be called once
     //init -> constructor -> any other constructors.... > Instantiated > ready for use
     init {
@@ -36,7 +37,7 @@ internal class JDBCImplTest {
     fun setup(){
         DatabaseFactory.connect() // connect to database using resource in test package
         underTest = JDBCImpl()
-        val pets = factory.manufacturePojoWithFullData(List::class.java, Pet::class.java) as List<Pet>
+        pets = factory.manufacturePojoWithFullData(List::class.java, Pet::class.java) as List<Pet>
         pets.forEach{
           underTest.create(it)
         }
@@ -60,7 +61,19 @@ internal class JDBCImplTest {
     }
 
     @Test
-    fun update() {
+    fun `it cannot update when ID not found in DB`() {
+        //GIVEN
+        val anotherPet = pets.first()
+        anotherPet.weight = 2.5
+        anotherPet.age = 2
+        //WHEN
+        val expected = underTest.update(anotherPet)
+        //THEN
+        assertThat(expected).isEqualTo(0)
+    }
+
+    @Test
+    fun `it should update`() {
         //GIVEN
         val list = underTest.list(1,50)
         val onePet = list[Random.nextInt(0,list.size)]
@@ -73,7 +86,17 @@ internal class JDBCImplTest {
     }
 
     @Test
-    fun delete() {
+    fun `it cannot delete when ID not found in DB`() {
+        //GIVEN
+        val anotherPet = pets.first()
+        //WHEN
+        val expected = underTest.delete(anotherPet.id)
+        //THEN
+        assertThat(expected).isEqualTo(0)
+    }
+
+    @Test
+    fun `it can should delete`() {
         //GIVEN
         val list = underTest.list(1,50)
         val onePet = list[Random.nextInt(0,list.size)]
@@ -81,6 +104,16 @@ internal class JDBCImplTest {
         val expected = underTest.delete(onePet.id)
         //THEN
         assertThat(expected).isEqualTo(1)
+    }
+
+    @Test
+    fun `it cannot get when ID not found in DB`() {
+        //GIVEN
+        val anotherPet = pets.first()
+        //WHEN
+        val expected = underTest.get(anotherPet.id)
+        //THEN
+        assertThat(expected).isNull()
     }
 
     @Test

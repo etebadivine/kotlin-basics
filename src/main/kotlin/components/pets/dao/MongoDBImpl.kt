@@ -2,7 +2,7 @@ package components.pets.dao
 
 import components.pets.models.Pet
 
-class MongoDBImpl:DAO {
+class MongoDBImpl:PetDAO {
 
     /**
      * creates a new record in the PETS table
