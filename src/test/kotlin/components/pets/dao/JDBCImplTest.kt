@@ -9,14 +9,13 @@ import org.jetbrains.exposed.sql.transactions.transaction
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.Test
 
-import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.TestInstance
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import uk.co.jemos.podam.api.PodamFactoryImpl
-import java.time.LocalDateTime
 import kotlin.random.Random
+import kotlin.random.Random.Default.nextInt
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS) //This annotation ask Junit5 to create only one instance of the class TradePostServiceTest and use it to perform the tests
 internal class JDBCImplTest {
@@ -98,8 +97,11 @@ internal class JDBCImplTest {
     @Test
     fun list() {
         //GIVEN
+        val allPets = underTest.list(1,80)
         //WHEN
+        val expected = underTest.list(1,80)
         //THEN
+        assertThat(expected).isEqualTo(allPets)
     }
 
     @Test
