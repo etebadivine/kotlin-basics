@@ -8,7 +8,7 @@ object Pets:Table() {
     val name: Column<String> = varchar("name", 255).index()
     val gender: Column<String> = varchar("gender", 15)
     val sound: Column<String> = varchar("sound", 20)
-    val species: Column<String> = varchar("species", 60)
+    val species: Column<String> = varchar("species", 60).index()
     val colour: Column<String> = varchar("colour", 120)
     val age: Column<Int> = integer("age")
     val weight: Column<Double> = double("weight")

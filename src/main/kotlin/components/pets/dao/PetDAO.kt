@@ -2,7 +2,7 @@ package components.pets.dao
 
 import components.pets.models.Pet
 
-interface DAO {
+interface PetDAO {
 
     /**
      * creates a new record in the PETS table

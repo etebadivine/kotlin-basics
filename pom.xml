@@ -25,6 +25,7 @@
         <podam.version>7.2.7.RELEASE</podam.version>
         <mockk.version>1.12.0</mockk.version>
 
+        <kodein.version>7.9.0</kodein.version>
     </properties>
 
     <repositories>
@@ -166,8 +167,15 @@
             <version>${mockk.version}</version>
             <scope>test</scope>
         </dependency>
+        <!--Libraries for test (end)-->
 
-
+        <!--Dependency Injection-->
+        <!-- https://mvnrepository.com/artifact/org.kodein.di/kodein-di-generic-jvm -->
+        <dependency>
+            <groupId>org.kodein.di</groupId>
+            <artifactId>kodein-di-jvm</artifactId>
+            <version>${kodein.version}</version>
+        </dependency>
     </dependencies>
 
 </project>
