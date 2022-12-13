@@ -5,6 +5,6 @@ data class Toy (
     val name: String,
     val colour: String,
     val manufacturer:String,
-    val owner: String
+    var owner: String
     )
 

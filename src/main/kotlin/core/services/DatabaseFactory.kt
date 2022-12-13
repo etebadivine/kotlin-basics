@@ -4,6 +4,7 @@ package core.services
 import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.HikariDataSource
 import components.pets.dao.Pets
+import components.toys.dao.Toys
 import core.services.Configuration.getSystemProperties
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.SchemaUtils
@@ -37,6 +38,7 @@ object DatabaseFactory {
         if(!hasRun){
             transaction {
                 SchemaUtils.createMissingTablesAndColumns(Pets)
+                SchemaUtils.createMissingTablesAndColumns(Toys)
             }
             hasRun = true
         }

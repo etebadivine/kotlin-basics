@@ -2,7 +2,7 @@ package components.toys.dao
 
 import components.toys.models.Toy
 
-interface ToyDao {
+interface ToyDAO {
     /**
      * creates a new record in the TOYS table
      * */

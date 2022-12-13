@@ -4,7 +4,7 @@ import components.toys.models.Toy
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.transaction
 
-class ToyJDBCImpl:ToyDao {
+class ToyJDBCImpl:ToyDAO {
 
     /**
      * creates a new record in the TOYS table
