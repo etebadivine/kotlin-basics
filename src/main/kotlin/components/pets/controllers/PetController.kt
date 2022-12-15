@@ -23,7 +23,7 @@ interface PetController {
     /**
      *Change ownership of the pet
      * */
-    fun sell(petID:Int,newOwner:String):APIResponse<String>
+    fun sell(petID:Int,newOwnerName:String):APIResponse<String>
 
     /**
      *list all pets
