@@ -9,7 +9,7 @@ import org.kodein.di.instance
 import org.slf4j.LoggerFactory
 import java.sql.SQLException
 
-class PetImpl(override val di: DI) :PetController,DIAware {
+class PetControllerImpl(override val di: DI) :PetController,DIAware {
 
     private val petDao:PetDAO by instance()
     private val log = LoggerFactory.getLogger(this::class.java)
@@ -57,7 +57,7 @@ class PetImpl(override val di: DI) :PetController,DIAware {
         val response: APIResponse<String> = try {
             val onePet = petDao.get(petID)
             if(onePet !=null){
-                APIResponse("PET200","00","${onePet.name} is making a sound: ${onePet.sound}",listOf())
+                APIResponse("PET201","00","${onePet.name} is making a sound: ${onePet.sound}",listOf())
             }else{
                 APIResponse("PET404","00","Pet not found.",listOf())
             }
@@ -71,15 +71,15 @@ class PetImpl(override val di: DI) :PetController,DIAware {
     /**
      *Change ownership of the pet
      * */
-    override fun sell(petID: Int, newOwner: String): APIResponse<String> {
+    override fun sell(petID: Int, newOwnerName: String): APIResponse<String> {
         val response: APIResponse<String> = try {
             val onePet = petDao.get(petID)
             if(onePet !=null){
-                onePet.owner = newOwner
+                onePet.owner = newOwnerName
                 if(petDao.update(onePet)>0){
                     APIResponse("PET201","00","${onePet.name}'s owner has been changed",listOf())
                 }else{
-                    APIResponse("PET200","00","${onePet.name}'s has not been changed.",listOf())
+                    APIResponse("PET200","00","${onePet.name}'s owner name has not been changed.",listOf())
                 }
             }else{
                 APIResponse("PET404","00","Pet not found.",listOf())
@@ -102,7 +102,7 @@ class PetImpl(override val di: DI) :PetController,DIAware {
             if(listOfPets.isNotEmpty()){
                 APIResponse("PET206","00","content found",listOfPets)
             }else{
-                APIResponse("PET204","00","Pet not found.",listOf())
+                APIResponse("PET204","00","No Pets not found.",listOf())
             }
         }catch (se:SQLException){
             log.warn("Failed to get list requested",se)

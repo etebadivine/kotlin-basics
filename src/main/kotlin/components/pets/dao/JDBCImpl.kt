@@ -37,6 +37,7 @@ class JDBCImpl:PetDAO {
         Pets.update({Pets.id eq pet.id}){
             it[age] = pet.age
             it[weight] = pet.weight
+            it[owner] = pet.owner
         }
     }
 
