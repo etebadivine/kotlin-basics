@@ -7,13 +7,11 @@ import io.mockk.mockk
 import io.mockk.unmockkAll
 import io.mockk.verify
 import org.assertj.core.api.Assertions.assertThat
-import org.junit.jupiter.api.AfterAll
-import org.junit.jupiter.api.BeforeAll
-import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.TestInstance
+import org.junit.jupiter.api.*
 import org.kodein.di.DI
 import org.kodein.di.bindSingleton
 import uk.co.jemos.podam.api.PodamFactoryImpl
+import java.sql.SQLException
 import kotlin.random.Random
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
@@ -50,9 +48,17 @@ internal class PetControllerImplTest {
     }
 
     @Test
-    fun `it cannot buy when details SQLException is thrown`() {
-        //TODO: Assignment
+    fun `it cannot buy when SQLException is thrown`() {
+        //GIVEN
+        val onePet = factory.manufacturePojoWithFullData(Pet::class.java)
+        every { service.create(any()) } throws SQLException()
+        //WHEN
+        val expected = underTest.buy(onePet)
+        //THEN
+        assertThat(expected.code).isEqualTo("02")
+        assertThat(expected.systemCode).isEqualTo("PET500")
     }
+
 
     @Test
     fun `it can buy a pet`() {
@@ -80,7 +86,14 @@ internal class PetControllerImplTest {
 
     @Test
     fun `it cannot obtain pet info due SQLException`() {
-        //TODO: Assignment
+        //GIVEN
+        val randomID = Random.nextInt()
+        every { service.get(any()) } throws SQLException()
+        //WHEN
+        val expected = underTest.obtainInfo(randomID)
+        //THEN
+        assertThat(expected.code).isEqualTo("02")
+        assertThat(expected.systemCode).isEqualTo("PET500")
     }
 
     @Test
@@ -113,7 +126,14 @@ internal class PetControllerImplTest {
 
     @Test
     fun `it cannot play when pet info not found due SQLException`() {
-        //TODO: Assignment
+        //GIVEN
+        val randomID = Random.nextInt()
+        every { service.get(any()) } throws SQLException()
+        //WHEN
+        val expected = underTest.play(randomID)
+        //THEN
+        assertThat(expected.code).isEqualTo("02")
+        assertThat(expected.systemCode).isEqualTo("PET500")
     }
 
     @Test
@@ -133,13 +153,56 @@ internal class PetControllerImplTest {
     }
 
     @Test
-    fun sell() {
-        //TODO: Assignment - all cases
+    fun `it cannot sell because id was not found`() {
+        //GIVEN
+        val onePet = factory.manufacturePojoWithFullData(Pet::class.java)
+        every { service.update(any()) } returns 0
+        every { service.get(any()) } returns onePet
+        //WHEN
+        val expected = underTest.sell(onePet.id,"James")
+        //THEN
+        assertThat(expected.code).isEqualTo("00")
+        assertThat(expected.systemCode).isEqualTo("PET200")
+    }
+
+    @Test
+    fun `it cannot sell when  SQLException is thrown`() {
+        //GIVEN
+        val onePet = factory.manufacturePojoWithFullData(Pet::class.java)
+        every { service.update(any()) } throws SQLException()
+        //WHEN
+        val expected = underTest.sell(onePet.id,"James")
+        //THEN
+        assertThat(expected.code).isEqualTo("02")
+        assertThat(expected.systemCode).isEqualTo("PET500")
+    }
+
+    @Test
+    fun `it can sell and new owner is updated`() {
+        //GIVEN
+        val randomID = Random.nextInt()
+        val onePet = factory.manufacturePojoWithFullData(Pet::class.java)
+        every { service.get(any()) } returns onePet
+        every { service.update(any()) } returns 1
+
+        //WHEN
+        val expected = underTest.sell(randomID,"James")
+        //THEN
+        assertThat(expected.code).isEqualTo("00")
+        assertThat(expected.systemCode).isEqualTo("PET201")
     }
 
     @Test
     fun `it cannot list due to an SQLException`() {
-        //TODO:Assignment
+        //GIVEN
+        val startIndex = Random.nextInt()
+        val numberOfRecords = Random.nextInt()
+        every { service.list(any(),any()) } throws SQLException()
+        //WHEN
+        val expected = underTest.list(startIndex,numberOfRecords)
+        //THEN
+        assertThat(expected.code).isEqualTo("02")
+        assertThat(expected.systemCode).isEqualTo("PET500")
     }
 
     @Test

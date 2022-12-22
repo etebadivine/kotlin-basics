@@ -75,7 +75,7 @@ internal class JDBCImplTest {
     fun `it should update`() {
         //GIVEN
         val list = underTest.list(1,50)
-        val onePet = list[Random.nextInt(0,list.size)]
+        val onePet = list[nextInt(0,list.size)]
         onePet.weight = 2.5
         onePet.age = 2
         //WHEN
@@ -119,7 +119,7 @@ internal class JDBCImplTest {
     fun get() {
         //GIVEN
         val list = underTest.list(1,50)
-        val onePet = list[Random.nextInt(0,list.size)]
+        val onePet = list[nextInt(0,list.size)]
         //WHEN
         val expected = underTest.get(onePet.id)
         //THEN

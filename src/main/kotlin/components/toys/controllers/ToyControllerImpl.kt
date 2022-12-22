@@ -9,7 +9,7 @@ import org.kodein.di.instance
 import org.slf4j.LoggerFactory
 import java.sql.SQLException
 
-class ToyImpl(override val di: DI): ToyController, DIAware {
+class ToyControllerImpl(override val di: DI): ToyController, DIAware {
 
     private val toyDao: ToyDAO by instance()
     private val log = LoggerFactory.getLogger(this::class.java)
