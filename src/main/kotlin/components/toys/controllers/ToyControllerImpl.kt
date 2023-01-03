@@ -73,7 +73,20 @@ class ToyControllerImpl(override val di: DI): ToyController, DIAware {
     /**
      *filter list of toys
      * */
-    override fun filter(startIndex: Int?, numberOfRecords: Int?, name: String?, species: String?): APIResponse<Toy> {
-        TODO("Not yet implemented")
+    override fun filter(startIndex: Int?, numberOfRecords: Int?, name: String?): APIResponse<Toy> {
+        val start = startIndex ?: 1
+        val size = numberOfRecords ?: 50
+        val response: APIResponse<Toy> = try {
+            val filteredToys = toyDao.list(start,size, name)
+            if(filteredToys.isNotEmpty()){
+                APIResponse("TOY206","00","content found",filteredToys)
+            }else{
+                APIResponse("TOY204","00","Toy not found.",listOf())
+            }
+        }catch (se: SQLException){
+            log.warn("Failed to get list requested",se)
+            APIResponse("TOY500","02","An error occurred when filtering toys. ${se.message}",listOf())
+        }
+        return response
     }
 }

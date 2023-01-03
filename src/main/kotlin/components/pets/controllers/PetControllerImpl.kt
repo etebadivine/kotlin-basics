@@ -2,6 +2,7 @@ package components.pets.controllers
 
 import components.pets.dao.PetDAO
 import components.pets.models.Pet
+import components.toys.models.Toy
 import core.shared.APIResponse
 import org.kodein.di.DI
 import org.kodein.di.DIAware
@@ -115,6 +116,19 @@ class PetControllerImpl(override val di: DI) :PetController,DIAware {
      *filter list of pets
      * */
     override fun filter(startIndex: Int?, numberOfRecords: Int?, name: String?, species: String?): APIResponse<Pet> {
-        TODO("Not yet implemented")
+        val start = startIndex ?: 1
+        val size = numberOfRecords ?: 50
+        val response: APIResponse<Pet> = try {
+            val filteredPets = petDao.list(start, size, name, species)
+            if(filteredPets.isNotEmpty()){
+                APIResponse("PET206","00","content found",filteredPets)
+            }else{
+                APIResponse("PET204","00","Pet not found.",listOf())
+            }
+        }catch (se: SQLException){
+            log.warn("Failed to get list requested",se)
+            APIResponse("PET500","02","An error occurred when filtering pets. ${se.message}",listOf())
+        }
+        return response
     }
 }

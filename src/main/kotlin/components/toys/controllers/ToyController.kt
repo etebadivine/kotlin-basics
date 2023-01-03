@@ -23,6 +23,6 @@ interface ToyController {
     /**
      *filter list of toys
      * */
-    fun filter(startIndex:Int?=1,numberOfRecords:Int?=50,name:String?,species:String?): APIResponse<Toy>
+    fun filter(startIndex:Int?=1,numberOfRecords:Int?=50,name:String?): APIResponse<Toy>
 
 }

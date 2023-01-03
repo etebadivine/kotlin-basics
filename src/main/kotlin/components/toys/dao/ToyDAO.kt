@@ -1,5 +1,6 @@
 package components.toys.dao
 
+import components.pets.models.Pet
 import components.toys.models.Toy
 
 interface ToyDAO {
@@ -26,5 +27,12 @@ interface ToyDAO {
     /**
      * get a list of  toys
      * */
+
     fun list(startIndex: Int,size:Int):List<Toy>
+
+    /**
+     * get a list of  toys
+     * */
+
+    fun list(startIndex: Int,size:Int, name:String?):List<Toy>
 }

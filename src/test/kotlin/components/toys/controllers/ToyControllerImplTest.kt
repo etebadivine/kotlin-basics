@@ -148,6 +148,41 @@ internal class ToyControllerImplTest {
     }
 
     @Test
+    fun `it filters an empty list`() {
+        //GIVEN
+        val numberOfRecords = Random.nextInt(1,10)
+        every { service.list(any(),any(),any()) } returns emptyList()
+        //WHEN
+        val expected = underTest.filter(1, numberOfRecords, "tom")
+        //THEN
+        assertThat(expected.code).isEqualTo("00")
+        assertThat(expected.systemCode).isEqualTo("TOY204")
+        assertThat(expected.data.isEmpty())
+    }
+
+    @Test
+    fun `it cannot filter due to SQLException`() {
+        //GIVEN
+        val numberOfRecords = Random.nextInt(1,10)
+        every { service.list(any(),any(),any()) } throws SQLException()
+        //WHEN
+        val expected = underTest.filter(1, numberOfRecords, "tom")
+        //THEN
+        assertThat(expected.code).isEqualTo("02")
+        assertThat(expected.systemCode).isEqualTo("TOY500")
+    }
+
+    @Test
     fun filter() {
+        //GIVEN
+        val numberOfRecords = Random.nextInt(1,10)
+        val list: List<Toy> = factory.manufacturePojoWithFullData(List::class.java, Toy::class.java) as List<Toy>
+        every { service.list(startIndex = any(), size = any(), name = any()) } returns list
+        //WHEN
+        val expected = underTest.filter(1, numberOfRecords, list.first().name)
+        //THEN
+        assertThat(expected.code).isEqualTo("00")
+        assertThat(expected.systemCode).isEqualTo("TOY206")
+        assertThat(expected.data.isNotEmpty())
     }
 }

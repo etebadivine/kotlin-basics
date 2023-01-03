@@ -156,10 +156,24 @@ internal class PetControllerImplTest {
     fun `it cannot sell because id was not found`() {
         //GIVEN
         val onePet = factory.manufacturePojoWithFullData(Pet::class.java)
-        every { service.update(any()) } returns 0
-        every { service.get(any()) } returns onePet
+        every { service.get(any()) } returns null
         //WHEN
-        val expected = underTest.sell(onePet.id,"James")
+        val newOwner = onePet.owner
+        val expected = underTest.sell(onePet.id,newOwner)
+        //THEN
+        assertThat(expected.code).isEqualTo("00")
+        assertThat(expected.systemCode).isEqualTo("PET404")
+    }
+
+    @Test
+    fun `it cannot sell because pet details could not be updated`() {
+        //GIVEN
+        val onePet = factory.manufacturePojoWithFullData(Pet::class.java)
+        every { service.get(any()) } returns onePet
+        every { service.update(any()) } returns 0
+        //WHEN
+        val newOwner = onePet.owner
+        val expected = underTest.sell(onePet.id,newOwner)
         //THEN
         assertThat(expected.code).isEqualTo("00")
         assertThat(expected.systemCode).isEqualTo("PET200")
@@ -171,7 +185,8 @@ internal class PetControllerImplTest {
         val onePet = factory.manufacturePojoWithFullData(Pet::class.java)
         every { service.update(any()) } throws SQLException()
         //WHEN
-        val expected = underTest.sell(onePet.id,"James")
+        val newOwner = onePet.owner
+        val expected = underTest.sell(onePet.id,newOwner)
         //THEN
         assertThat(expected.code).isEqualTo("02")
         assertThat(expected.systemCode).isEqualTo("PET500")
@@ -186,7 +201,8 @@ internal class PetControllerImplTest {
         every { service.update(any()) } returns 1
 
         //WHEN
-        val expected = underTest.sell(randomID,"James")
+        val newOwner = onePet.owner
+        val expected = underTest.sell(randomID,newOwner)
         //THEN
         assertThat(expected.code).isEqualTo("00")
         assertThat(expected.systemCode).isEqualTo("PET201")
@@ -282,6 +298,40 @@ internal class PetControllerImplTest {
 
     @Test
     fun filter() {
-        //TODO:Assignment
+      //GIVEN
+        val numberOfRecords = Random.nextInt(1,10)
+        val list: List<Pet> = factory.manufacturePojoWithFullData(List::class.java, Pet::class.java) as List<Pet>
+        every { service.list(startIndex = any(), size = any(),name = any(), species = any()) } returns list
+      //WHEN
+        val expected = underTest.filter(1, numberOfRecords, list.first().name, list.first().species)
+      //THEN
+        assertThat(expected.code).isEqualTo("00")
+        assertThat(expected.systemCode).isEqualTo("PET206")
+        assertThat(expected.data.isNotEmpty())
+    }
+
+    @Test
+    fun `it filters an empty list`() {
+        //GIVEN
+        val numberOfRecords = Random.nextInt(1,10)
+        every { service.list(any(),any(),any(),any()) } returns emptyList()
+        //WHEN
+        val expected = underTest.filter(1, numberOfRecords, "tom", "poodle")
+        //THEN
+        assertThat(expected.code).isEqualTo("00")
+        assertThat(expected.systemCode).isEqualTo("PET204")
+        assertThat(expected.data.isEmpty())
+    }
+
+    @Test
+    fun `it cannot filter due to SQLException`() {
+        //GIVEN
+        val numberOfRecords = Random.nextInt(1,10)
+        every { service.list(any(),any(),any(),any()) } throws SQLException()
+        //WHEN
+        val expected = underTest.filter(1, numberOfRecords, "tom", "poodle")
+        //THEN
+        assertThat(expected.code).isEqualTo("02")
+        assertThat(expected.systemCode).isEqualTo("PET500")
     }
 }
